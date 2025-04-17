@@ -1,4 +1,10 @@
-version: "3.3"
+version: '3.8'
+
+# Advantech EPC-7300 L2-02 AI development Docker Compose file
+# Created and maintained by Samir Singh <samir.singh@advantech.com>
+# This Docker Compose file configures the Advantech EPC-7300 L2-02 AI development container
+# with all necessary hardware acceleration settings.
+# Copyright (c) 2025 Advantech Corporation. All rights reserved.
 
 services:
   advantech-l2-02:
@@ -6,7 +12,13 @@ services:
     container_name: advantech-l2-02
     privileged: true
     network_mode: host
-    entrypoint: ["/bin/bash", "-c", "sleep infinity"]
+    runtime: nvidia
+    entrypoint: ["/bin/bash", "-c"]
+    labels:
+      maintainer: "Samir Singh <samir.singh@advantech.com>"
+      vendor: "Advantech"
+      version: "1.2"
+      description: "Advantech EPC-7300 L2-02 AI development Container with hardware acceleration"
     environment:
       - DISPLAY=${DISPLAY}
       - NVIDIA_VISIBLE_DEVICES=all
@@ -33,13 +45,15 @@ services:
       - /dev/nvhost-nvdec
       - /dev/nvhost-nvjpg
       - /dev/nvgpu/igpu0
+    command: "sleep infinity"
 
   diagnostics:
     image: darkratio/advantech_coe_l2-02:v1.2
     container_name: advantech-l2-02-diagnostics
     privileged: true
     network_mode: host
-    entrypoint: ["/bin/bash", "-c", "cd /app/diagnostics && ./run_diagnostics.sh"]
+    runtime: nvidia
+    entrypoint: ["/bin/bash", "-c"]
     environment:
       - DISPLAY=${DISPLAY}
       - NVIDIA_VISIBLE_DEVICES=all
@@ -64,3 +78,6 @@ services:
       - /dev/nvhost-nvdec
       - /dev/nvhost-nvjpg
       - /dev/nvgpu/igpu0
+    command: "cd /app/diagnostics && ./run_diagnostics.sh"
+    profiles:
+      - diagnostics
