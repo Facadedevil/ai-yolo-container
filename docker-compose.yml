@@ -6,7 +6,6 @@ services:
     container_name: advantech-l2-02
     privileged: true
     network_mode: host
-    runtime: nvidia
     entrypoint: ["/bin/bash", "-c", "sleep infinity"]
     environment:
       - DISPLAY=${DISPLAY}
@@ -34,18 +33,12 @@ services:
       - /dev/nvhost-nvdec
       - /dev/nvhost-nvjpg
       - /dev/nvgpu/igpu0
-    labels:
-      maintainer: "Samir Singh <samir.singh@advantech.com>"
-      vendor: "Advantech"
-      version: "1.2"
-      description: "Advantech EPC-7300 L2-02 AI development Container with hardware acceleration"
 
   diagnostics:
     image: darkratio/advantech_coe_l2-02:v1.2
     container_name: advantech-l2-02-diagnostics
     privileged: true
     network_mode: host
-    runtime: nvidia
     entrypoint: ["/bin/bash", "-c", "cd /app/diagnostics && ./run_diagnostics.sh"]
     environment:
       - DISPLAY=${DISPLAY}
